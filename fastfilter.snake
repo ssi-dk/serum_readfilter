@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+# snakemake -s ~/code/fastfilter/fastfilter.snake --config R1_reads={read_location} R2_reads={read_location} DB={name}
+# snakemake -s ~/code/fastfilter/fastfilter.snake --config R1_reads=~/test/data/nextseq/FHA3_S64_L555_R1_001.fastq.gz R2_reads=~/test/data/nextseq/FHA3_S64_L555_R2_001.fastq.gz Sample=Test
+
+DB = str(config["DB"])
+R1 = str(config["R1_reads"])
+R2 = str(config["R2_reads"])
+configfile: "config.yaml"
+# my understanding is all helps specify final output
+onsuccess:
+    print("Workflow complete")
+    output = ["status.txt"]
+    with open(output[0], "w") as status:
+        status.write("Success")
+onerror:
+    print("Workflow error")
+    output = ["status.txt"]
+    with open(output[0], "w") as status:
+        status.write("Failure")
+
+rule all:
+    input:
+        "filtered_R1.fastq.gz"
+        "filtered_R2.fastq.gz",
+
+rule run_kraken:
+    input:
+        reads = ({R1}, {R2})
+    output:
+        filtered = "kraken"
+    params:
+        db = config["kraken"][DB]
+        threads = config["threads"]
+    shell:
+        "kraken --db {params.db} --threads {params.threads} --quick --min-hits 1 --classified-out {output} {input.reads[0]} {input.reads[1]} "
+
+rule run_kaiju:
+    #for coding genes 
+    input:
+        reads = ({R1}, {R2})
+    output:
+        filtered = "kaiju"
+    params:
+        db = config["kaiju"][DB]
+        nodes = config["kaiju"][DB]["nodes"]
+        threads = config["threads"]
+    shell:
+        """
+        kaiju -t {params.nodes} -z {params.threads} -i {input.reads[0]} -j {input.reads[1]} -o {output}
+        perl -lsane 'print $F[1] if $F[0] =~ /C/' kaiju.out >classifiedreadnames.txt
+        perl -lne 'BEGIN{open(F,"classifiedreadnames.txt");while(<F>){chomp;$h{$_}=1}}if($c++%4==0&&/^@/){@X=split(/[\s@]/,$_);if($h{$X[1]}==1){print;$p=1;}else{$p=0}}elsif($p){print;}' input_reads.fastq >classified_reads.fastq
+        """
