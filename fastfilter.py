@@ -35,10 +35,11 @@ def program_initialization():
 
 
 def filter_reads_on_kraken(reads, outfile, db_location, threads, inverse):
-    if not inverse:
-        subprocess.Popen(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--classified-out", outfile, reads])
-    else:
-        subprocess.Popen(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--unclassified-out", outfile, reads])
+    with open(os.devnull, 'w') as devnull:
+        if not inverse:
+            subprocess.Popen(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--classified-out", outfile, reads], stdout=devnull, stderr=subprocess.STDOUT)
+        else:
+            subprocess.Popen(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--unclassified-out", outfile, reads], stdout=devnull, stderr=subprocess.STDOUT)
 
 
 if __name__ == "__main__":
