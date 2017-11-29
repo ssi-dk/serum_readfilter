@@ -24,7 +24,7 @@ def program_initialization():
                         default="filtered")
     parser.add_argument("-t", "--threads",
                         help="threads",
-                        default=1)
+                        default=8)
     parser.add_argument("-inv", "--inverse",
                         help="Returns reads that aren't in this set instead of ones that are",
                         action="store_true",
@@ -36,9 +36,9 @@ def program_initialization():
 
 def filter_reads_on_kraken(reads, outfile, db_location, threads, inverse):
     if not inverse:
-        subprocess.call(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--classified-out", outfile, reads])
+        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --classified-out {} {}").format(db_location, threads, outfile, reads)
     else:
-        subprocess.call(["kraken", "--db", db_location, "--threads", threads, "--quick", "--min-hits", "1", "--unclassified-out", outfile, reads])
+        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --unclassified-out {} {}").format(db_location, threads, outfile, reads)
 
 
 if __name__ == "__main__":
