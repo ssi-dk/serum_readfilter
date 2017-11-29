@@ -34,17 +34,17 @@ def program_initialization():
     return args
 
 
-def filter_reads_on_kraken(reads, outfile, db_location, threads, inverse):
+def filter_reads_on_kraken(R1_reads, R2_reads, outfile, db_location, threads, inverse):
+    if R2_reads is None:
+        R2_reads = ""
     if not inverse:
-        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --classified-out {} {} 1> /dev/null".format(db_location, threads, outfile, reads), shell=True)
+        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --classified-out {} {} {} 1> /dev/null".format(db_location, threads, outfile, R1_reads, R2_reads), shell=True)
     else:
-        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --unclassified-out {} {} 1> /dev/null".format(db_location, threads, outfile, reads), shell=True)
+        subprocess.call("kraken --db {} --threads {} --quick --min-hits 1 --unclassified-out {} {} {} 1> /dev/null".format(db_location, threads, outfile, R1_reads, R2_reads), shell=True)
 
 
 if __name__ == "__main__":
     args = program_initialization()
     print("Starting")
-    filter_reads_on_kraken(args.R1_reads, args.output_name + "_" + os.path.split(args.R1_reads)[1].replace(".gz", ""), args.database_to_use, args.threads, args.inverse)
-    if args.R2_reads is not None:
-        filter_reads_on_kraken(args.R2_reads, args.output_name + "_" + os.path.split(args.R2_reads)[1].replace(".gz", ""), args.database_to_use, args.threads, args.inverse)
+    filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
     print("Complete")
