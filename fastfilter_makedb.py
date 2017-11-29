@@ -20,6 +20,9 @@ def program_initialization():
                         help="Remove DB folder if present before",
                         action="store_true",
                         default=False)
+    parser.add_argument("-t", "--threads",
+                        help="Number of threads",
+                        default=1)
     parser.add_argument("-k", "--kmer_size",
                         help="Kmer size for DB creation default 21",
                         default=21)
@@ -28,7 +31,7 @@ def program_initialization():
     return args
 
 
-def add_kraken_id_to_contigs(fasta_file, db_location, kmer_size=21):
+def add_kraken_id_to_contigs(fasta_file, db_location, threads=1, kmer_size=21):
     with open(fasta_file, "r") as fasta_input:
         records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
 
@@ -57,8 +60,8 @@ def add_kraken_id_to_contigs(fasta_file, db_location, kmer_size=21):
     with open("kraken.fasta", "w") as output:
         Bio.SeqIO.write(records, "kraken.fasta", "fasta")
 
-    subprocess.call("kraken-build --add-to-library kraken.fasta --db .", shell=True)
-    subprocess.call("kraken-build --build --kmer-len {} --minimizer-len 1 --db .".format(kmer_size), shell=True)
+    subprocess.call("kraken-build --threads {} --add-to-library kraken.fasta --db .".format(threads), shell=True)
+    subprocess.call("kraken-build --threads {} --build --kmer-len {} --minimizer-len 1 --db .".format(threads, kmer_size), shell=True)
 
 
 if __name__ == "__main__":
@@ -66,5 +69,5 @@ if __name__ == "__main__":
     print("Starting")
     if args.force_clean and os.path.isdir(args.database_to_create):
         shutil.rmtree(args.database_to_create)
-    add_kraken_id_to_contigs(args.input_fasta, args.database_to_create, args.kmer_size)
+    add_kraken_id_to_contigs(args.input_fasta, args.database_to_create, args.threads, args.kmer_size)
     print("Complete")
