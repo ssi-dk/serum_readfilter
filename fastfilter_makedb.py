@@ -3,6 +3,7 @@ import Bio.SeqIO
 import os
 import subprocess
 import argparse
+import shutil
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 
@@ -15,6 +16,10 @@ def program_initialization():
     parser.add_argument("-i", "--input_fasta",
                         help="Fasta file containing sequences to filter on",
                         required=True)
+    parser.add_argument("-f", "--force_clean",
+                        help="Remove DB folder if present before",
+                        action="store_true",
+                        default=False)
     parser.add_argument("-k", "--kmer_size",
                         help="Kmer size for DB creation default 21",
                         default=21)
@@ -58,4 +63,8 @@ def add_kraken_id_to_contigs(fasta_file, db_location, kmer_size=21):
 
 if __name__ == "__main__":
     args = program_initialization()
+    print("Starting")
+    if args.force_clean and os.path.isdir(args.database_to_create):
+        shutil.rmtree(args.database_to_create)
     add_kraken_id_to_contigs(args.input_fasta, args.database_to_create, args.kmer_size)
+    print("Complete")
