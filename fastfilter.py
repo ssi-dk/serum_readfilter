@@ -43,6 +43,6 @@ def filter_reads_on_kraken(reads, outfile, db_location, threads, inverse):
 
 if __name__ == "__main__":
     args = program_initialization()
-    filter_reads_on_kraken(args.R1_reads, args.output_name + "_" + os.path.split(args.R1_reads[1]), args.args.db_location, args.threads, args.inverse)
+    filter_reads_on_kraken(args.R1_reads, args.output_name + "_" + os.path.split(args.R1_reads)[1], args.args.db_location, args.threads, args.inverse)
     if args.R2_reads is not None:
-        filter_reads_on_kraken(args.R2_reads, args.output_name + "_" + os.path.split(args.R2_reads[1]), args.args.db_location, args.threads, args.inverse)
+        filter_reads_on_kraken(args.R2_reads, args.output_name + "_" + os.path.split(args.R2_reads)[1], args.args.db_location, args.threads, args.inverse)
