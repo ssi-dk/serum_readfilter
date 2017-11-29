@@ -52,8 +52,8 @@ def add_kraken_id_to_contigs(fasta_file, db_location, kmer_size=21):
     with open("kraken.fasta", "w") as output:
         Bio.SeqIO.write(records, "kraken.fasta", "fasta")
 
-    subprocess.call(["kraken-build", "--add-to-library", "kraken.fasta", "--db", "."])
-    subprocess.call(["kraken-build", "--build", "--kmer-len", str(kmer_size), "--minimizer-len", "1", "--db", "."])
+    subprocess.call("kraken-build --add-to-library kraken.fasta --db .", shell=True)
+    subprocess.call("kraken-build --build --kmer-len {} --minimizer-len 1 --db .".format(kmer_size), shell=True)
 
 
 if __name__ == "__main__":
