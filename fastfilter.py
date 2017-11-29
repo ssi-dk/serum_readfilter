@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 import subprocess
 import argparse
 
@@ -21,7 +20,7 @@ def program_initialization():
                         type=str)
     parser.add_argument("-o", "--output_name",
                         help="Name to add to filtered samples",
-                        default="filtered")
+                        default="filtered.fastq.gz")
     parser.add_argument("-t", "--threads",
                         help="threads",
                         default=8)
