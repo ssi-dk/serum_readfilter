@@ -58,4 +58,4 @@ def add_kraken_id_to_contigs(fasta_file, db_location, kmer_size=21):
 
 if __name__ == "__main__":
     args = program_initialization()
-    add_kraken_id_to_contigs(args.input_fasta, args.db_location, args.kmer_size)
+    add_kraken_id_to_contigs(args.input_fasta, args.database_to_create, args.kmer_size)
