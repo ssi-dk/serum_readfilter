@@ -77,9 +77,9 @@ def bbnorm_results(R1_reads, R2_reads, threads):
     R1_normalized = "norm" + R1_reads
     R2_normalized = "norm" + R2_reads
     if R2_reads is None:
-        subprocess.call("bbnorm.sh threads={} in={} out={} {}".format(threads, R1_reads, R1_normalized, config["bbnorm"]["options"]))
+        subprocess.call("bbnorm.sh threads={} in={} out={} {} 1> /dev/null".format(threads, R1_reads, R1_normalized, config["bbnorm"]["options"]), shell=True)
     else:
-        subprocess.call("bbnorm.sh threads={} in={} in2={} out={} out2={} {}".format(threads, R1_reads, R2_reads, R1_normalized, R2_normalized, config["bbnorm"]["options"]))
+        subprocess.call("bbnorm.sh threads={} in={} in2={} out={} out2={} {} 1> /dev/null".format(threads, R1_reads, R2_reads, R1_normalized, R2_normalized, config["bbnorm"]["options"]), shell=True)
 
 
 if __name__ == "__main__":
