@@ -1,0 +1,4 @@
+kraken:
+  options: "--quick --min-hits 1 --out-fmt paired"
+kaiju:
+  options: " "
