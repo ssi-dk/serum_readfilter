@@ -1,4 +1,6 @@
 kraken:
-  options: "--quick --min-hits 1 --out-fmt paired"
+  options: "--quick --min-hits 1 -F"
 kaiju:
   options: " "
+bbnorm:
+  options: "target=25 -Xmx4g"
