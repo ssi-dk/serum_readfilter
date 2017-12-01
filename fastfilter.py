@@ -95,5 +95,8 @@ if __name__ == "__main__":
     else:
         filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
     if args.norm:
-        bbnorm_results(args.output_name + "_R1.fastq", args.output_name + "_R2.fastq", args.threads)
+        if args.R2_reads is None:
+            bbnorm_results(args.output_name + "_R1.fastq", args.R2_reads, args.threads)
+        else:
+            bbnorm_results(args.output_name + "_R1.fastq", args.output_name + "_R2.fastq", args.threads)
     print("Complete")
