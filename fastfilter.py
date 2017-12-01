@@ -63,7 +63,7 @@ def filter_reads_on_kaiju(R1_reads, R2_reads, outfile, db_location, threads, inv
 if __name__ == "__main__":
     args = program_initialization()
     print("Starting")
-    if args.Kaiju:
+    if args.kaiju:
         filter_reads_on_kaiju()
     else:
         filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
