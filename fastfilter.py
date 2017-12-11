@@ -101,7 +101,7 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
 
     if R2_reads is not None:
         filtered_records = []
-        for record in Bio.SeqIO.parse(gzip.open(R1_reads, "rt"), "fastq"):
+        for record in Bio.SeqIO.parse(gzip.open(R2_reads, "rt"), "fastq"):
             if record.id in read_dict:
                 filtered_records.append(record)
         with open(outfile + "_R2.fastq", "w") as R1_out:
