@@ -23,7 +23,7 @@ def program_initialization():
 
 def make_kaiju_db_from_fasta(fasta_file, db_location, threads=1):
     subprocess.call("mkbwt -n {} -a protein -o {}".format(threads, args.db_location), shell=True)
-    subprocess.call("mkfmi {}".format(args.db_location), shell=True)
+    subprocess.call("mkfmi {}".format(db_location), shell=True)
 
 
 if __name__ == "__main__":
