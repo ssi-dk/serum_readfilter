@@ -122,7 +122,7 @@ if __name__ == "__main__":
             config = yaml.load(yaml_stream)
 
     if args.kaiju:
-        filter_reads_on_kaiju()
+        filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
     else:
         filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
     if args.norm:
