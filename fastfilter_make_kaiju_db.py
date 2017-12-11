@@ -29,5 +29,5 @@ def make_kaiju_db_from_fasta(fasta_file, db_location, threads=1):
 if __name__ == "__main__":
     args = program_initialization()
     print("Starting")
-    make_kaiju_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size)
+    make_kaiju_db_from_fasta(args.input_fasta, args.database_to_create, args.threads)
     print("Complete")
