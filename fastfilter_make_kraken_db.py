@@ -9,7 +9,7 @@ import shutil
 
 
 def program_initialization():
-    parser = argparse.ArgumentParser(description='Fastfilter - makedb, generate a DB to be used for filtering of reads')
+    parser = argparse.ArgumentParser(description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads')
     parser.add_argument("-db", "--database_to_create",
                         help="Create a kraken db at location",
                         required=True)
@@ -31,7 +31,7 @@ def program_initialization():
     return args
 
 
-def add_kraken_id_to_contigs(fasta_file, db_location, threads=1, kmer_size=21):
+def make_kraken_db_from_fasta(fasta_file, db_location, threads=1, kmer_size=21):
     with open(fasta_file, "r") as fasta_input:
         records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
 
@@ -69,5 +69,5 @@ if __name__ == "__main__":
     print("Starting")
     if args.force_clean and os.path.isdir(args.database_to_create):
         shutil.rmtree(args.database_to_create)
-    add_kraken_id_to_contigs(args.input_fasta, args.database_to_create, args.threads, args.kmer_size)
+    make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size)
     print("Complete")
