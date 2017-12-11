@@ -93,7 +93,7 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
             if line.startswith(classification_symbol):
                 read_dict[line.split("\t")[1]] = ""
     filtered_records = []
-    for record in Bio.SeqIO.parse(gzip.open(R1_reads), "fastq"):
+    for record in Bio.SeqIO.parse(gzip.open(R1_reads, "rt"), "fastq"):
         if record.id in read_dict:
             filtered_records.append(record)
     with open(outfile + "_R1.fastq", "w") as R1_out:
