@@ -94,12 +94,12 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
     with open(outfile + "_R1.fastq", "w") as R1_out:
         for seq in skbio.io.read(R1_reads, format="fastq"):
             if seq.metadata['id'] in read_dict:
-                seq.write(R1_out)
+                seq.write(R1_out, format="fastq")
     if R2_reads is not None:
         with open(outfile + "_R2.fastq", "w") as R2_out:
             for seq in skbio.io.read(R2_reads, format="fastq"):
                 if seq.metadata['id'] in read_dict:
-                    seq.write(R2_out)
+                    seq.write(R2_out, format="fastq")
     return 0
 
 
