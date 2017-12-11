@@ -91,12 +91,12 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
         for line in classifier:
             if line.startswith(classification_symbol):
                 read_dict[line.split("\t")[1]] = ""
-    with open(outfile + "_R1.fastq") as R1_out:
+    with open(outfile + "_R1.fastq", "w") as R1_out:
         for seq in skbio.io.read(R1_reads, format="fastq"):
             if seq.metadata['id'] in read_dict:
                 seq.write(R1_out)
     if R2_reads is not None:
-        with open(outfile + "_R2.fastq") as R2_out:
+        with open(outfile + "_R2.fastq", "w") as R2_out:
             for seq in skbio.io.read(R2_reads, format="fastq"):
                 if seq.metadata['id'] in read_dict:
                     seq.write(R2_out)
