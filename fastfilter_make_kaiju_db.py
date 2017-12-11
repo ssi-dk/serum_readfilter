@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import argparse
+import os
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 
@@ -24,6 +25,8 @@ def program_initialization():
 def make_kaiju_db_from_fasta(fasta_file, db_location, threads=1):
     subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, fasta_file), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
+    os.remove(db_location + ".bwt")
+    os.remove(db_location + ".sa")
 
 
 if __name__ == "__main__":
