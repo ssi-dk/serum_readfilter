@@ -1,6 +1,6 @@
 kraken:
   options: "--quick --min-hits 1 --fastq-output"
 kaiju:
-  options: " "
+  options: "-m 7 -s 1"
 bbnorm:
   options: "target=25 -Xmx4g"
