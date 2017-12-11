@@ -92,29 +92,29 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
         for line in classifier:
             if line.startswith(classification_symbol):
                 read_dict[line.split("\t")[1]] = ""
-    filtered_records = []
-    for record in Bio.SeqIO.parse(R1_reads, "fastq"):
-        if record.id in read_dict:
-            filtered_records.append(record)
-    with open(outfile + "_R1.fastq", "w") as R1_out:
-        Bio.SeqIO.write(filtered_records, R1_out, "fastq")
-
-    if R2_reads is not None:
-        filtered_records = []
-        for record in Bio.SeqIO.parse(R1_reads, "fastq"):
-            if record.id in read_dict:
-                filtered_records.append(record)
-        with open(outfile + "_R1.fastq", "w") as R1_out:
-            Bio.SeqIO.write(filtered_records, R1_out, "fastq")
+    # filtered_records = []
+    # for record in Bio.SeqIO.parse(R1_reads, "fastq"):
+    #     if record.id in read_dict:
+    #         filtered_records.append(record)
     # with open(outfile + "_R1.fastq", "w") as R1_out:
-    #     for seq in skbio.io.read(R1_reads, format="fastq", verify=False):
-    #         if seq.metadata['id'] in read_dict:
-    #             seq.write(R1_out, format="fastq")
+    #     Bio.SeqIO.write(filtered_records, R1_out, "fastq")
+
     # if R2_reads is not None:
-    #     with open(outfile + "_R2.fastq", "w") as R2_out:
-    #         for seq in skbio.io.read(R2_reads, format="fastq", verify=False):
-    #             if seq.metadata['id'] in read_dict:
-    #                 seq.write(R2_out, format="fastq")
+    #     filtered_records = []
+    #     for record in Bio.SeqIO.parse(R1_reads, "fastq"):
+    #         if record.id in read_dict:
+    #             filtered_records.append(record)
+    #     with open(outfile + "_R1.fastq", "w") as R1_out:
+    #         Bio.SeqIO.write(filtered_records, R1_out, "fastq")
+    with open(outfile + "_R1.fastq", "w") as R1_out:
+        for seq in skbio.io.read(gzip.open(R1_reads, "rt"), format="fastq", verify=False):
+            if seq.metadata['id'] in read_dict:
+                seq.write(R1_out, format="fastq")
+    if R2_reads is not None:
+        with open(outfile + "_R2.fastq", "w") as R2_out:
+            for seq in skbio.io.read(gzip.open(R2_reads, "rt"), format="fastq", verify=False):
+                if seq.metadata['id'] in read_dict:
+                    seq.write(R2_out, format="fastq")
     return 0
 
 
