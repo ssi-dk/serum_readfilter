@@ -32,6 +32,10 @@ def program_initialization():
 
 
 def make_kraken_db_from_fasta(fasta_file, db_location, threads=1, kmer_size=21):
+    if shutil.which("kraken-build") is None:
+        print("Error finding kraken-build (from kraken) in PATH")
+        exit()
+
     with open(fasta_file, "r") as fasta_input:
         records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
 

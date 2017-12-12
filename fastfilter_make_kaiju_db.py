@@ -2,6 +2,7 @@
 import subprocess
 import argparse
 import os
+import shutil
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 
@@ -23,6 +24,12 @@ def program_initialization():
 
 
 def make_kaiju_db_from_fasta(fasta_file, db_location, threads=1):
+    if shutil.which("mkbwt") is None:
+        print("Error finding mkbwt (from kaiju) in PATH")
+        exit()
+    if shutil.which("mkfmi") is None:
+        print("Error finding mkfmi (from kaiju) in PATH")
+        exit()
     subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, fasta_file), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")

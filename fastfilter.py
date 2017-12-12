@@ -5,7 +5,7 @@ import ruamel.yaml
 import pkg_resources
 import Bio.SeqIO
 import gzip
-
+import shutil
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 config_file = pkg_resources.resource_filename(__name__, "config.yaml")
@@ -56,6 +56,9 @@ def program_initialization():
 
 
 def filter_reads_on_kraken(R1_reads, R2_reads, outfile, db_location, threads, inverse):
+    if shutil.which("kraken") is None:
+        print("Error finding kraken in PATH")
+        exit()
     paired = "--paired --out-fmt paired "
     if R2_reads is None:
         R2_reads = ""
@@ -72,6 +75,9 @@ def filter_reads_on_kraken(R1_reads, R2_reads, outfile, db_location, threads, in
 
 
 def filter_reads_on_kaiju(R1_reads, R2_reads, outfile, db_location, threads, inverse):
+    if shutil.which("kaijux") is None:
+        print("Error finding kaijux in PATH")
+        exit()
     # subprocess.call("kaijux -t {} -f {} -i {} -j {} -z {} {}")
     tempfile = "kaiju.out"
     if R2_reads is None:
@@ -112,6 +118,9 @@ def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, ou
 
 
 def bbnorm_results(R1_reads, R2_reads, threads):
+    if shutil.which("bbnorm.sh") is None:
+        print("Error finding bbnorm.sh in PATH")
+        exit()
     R1_normalized = "norm" + R1_reads
     R2_normalized = "norm" + R2_reads
     if R2_reads is None:
