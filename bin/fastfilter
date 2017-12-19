@@ -34,7 +34,7 @@ def add_subparser__makedb(subparsers):
 
 def add_subparser__makekrakendb(subparsers):
     makekrakendb_parser = subparsers.add_parser(
-        'makekrakendb',
+        'kraken',
         help='',
         usage='',
         description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads'
@@ -82,7 +82,7 @@ def add_subparser__makekrakendb(subparsers):
 
 def add_subparser__makekaijudb(subparsers):
     makekaijudb_parser = subparsers.add_parser(
-        'makekrakendb',
+        'kaiju',
         help='',
         usage='',
         description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads'
