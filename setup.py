@@ -18,7 +18,7 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3 :: Only',
     ],
-    packages=find_packages(),
+    packages=['fastfilter'],
     package_data={'fastfilter': ['test_data/*']},
     install_requires=[]
 )
