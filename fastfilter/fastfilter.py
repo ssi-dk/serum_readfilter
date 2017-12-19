@@ -264,5 +264,3 @@ if __name__ == "__main__":
             fastfilter.filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
         if args.method == "kaiju":
             fastfilter.filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
-
-    return 0
