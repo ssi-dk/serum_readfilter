@@ -34,40 +34,6 @@ def add_subparser__makedb(subparsers):
     add_subparser__makekrakendb(makedb_subparsers)
     add_subparser__makekaijudb(makedb_subparsers)
 
-    makedb_parser.add_argument(
-        "-db",
-        "--database_to_create",
-        help="Create a kraken db at location",
-        required=True
-    )
-    makedb_parser.add_argument(
-        "-i",
-        "--input_fasta",
-        help="Fasta file/directory containing sequences to filter on",
-        required=True
-    )
-    makedb_parser.add_argument(
-        "-f",
-        "--force_clean",
-        help="Remove DB folder if present before",
-        action="store_true",
-        default=False
-    )
-    makedb_parser.add_argument(
-        "-t",
-        "--threads",
-        help="Number of threads",
-        default=1
-    )
-    makedb_parser.add_argument(
-        "-x",
-        "--file_extensions",
-        nargs="+",
-        type=list,
-        help="Acceptable fasta file extenstions for reference",
-        default=[".fna", ".fa", ".fasta"]
-    )
-
 
 def add_subparser__makekrakendb(subparsers):
     makekrakendb_parser = subparsers.add_parser(
@@ -77,10 +43,43 @@ def add_subparser__makekrakendb(subparsers):
         description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads'
     )
     makekrakendb_parser.add_argument(
+        "-db",
+        "--database_to_create",
+        help="Create a kraken db at location",
+        required=True
+    )
+    makekrakendb_parser.add_argument(
+        "-i",
+        "--input_fasta",
+        help="Fasta file/directory containing sequences to filter on",
+        required=True
+    )
+    makekrakendb_parser.add_argument(
+        "-f",
+        "--force_clean",
+        help="Remove DB folder if present before",
+        action="store_true",
+        default=False
+    )
+    makekrakendb_parser.add_argument(
+        "-t",
+        "--threads",
+        help="Number of threads",
+        default=1
+    )
+    makekrakendb_parser.add_argument(
         "-k",
         "--kmer_size",
         help="Kmer size for DB creation",
         default=31
+    )
+    makekrakendb_parser.add_argument(
+        "-x",
+        "--file_extensions",
+        nargs="+",
+        type=list,
+        help="Acceptable fasta file extenstions for reference",
+        default=[".fna", ".fa", ".fasta"]
     )
 
 
