@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import Bio.SeqIO
 import os
 import subprocess
