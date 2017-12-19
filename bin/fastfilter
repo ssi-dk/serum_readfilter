@@ -23,7 +23,7 @@ def program_initialization():
 
 
 def add_subparser__makedb(subparsers):
-    makedb_parser = subparsers.add_parser(
+    makedb_parser = subparsers.add_subparsers(
         'makedb',
         description='Make database for run'
     )
@@ -31,8 +31,8 @@ def add_subparser__makedb(subparsers):
     add_subparser__makekaijudb(makedb_parser)
 
 
-def add_subparser__makekrakendb(makedb_parser):
-    makekrakendb_parser = makedb_parser.add_parser(
+def add_subparser__makekrakendb(subparsers):
+    makekrakendb_parser = subparsers.add_parser(
         'makekrakendb',
         help='',
         usage='',
@@ -79,8 +79,8 @@ def add_subparser__makekrakendb(makedb_parser):
     )
 
 
-def add_subparser__makekaijudb(makedb_parser):
-    makekaijudb_parser = makedb_parser.add_parser(
+def add_subparser__makekaijudb(subparsers):
+    makekaijudb_parser = subparsers.add_parser(
         'makekrakendb',
         help='',
         usage='',
