@@ -23,7 +23,7 @@ def program_initialization():
 
 
 def add_subparser__makedb(subparsers):
-    makedb_parser = subparsers.add_parsers(
+    makedb_parser = subparsers.add_parser(
         'makedb',
         description='Make database for run'
     )
