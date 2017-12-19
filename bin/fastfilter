@@ -23,12 +23,13 @@ def program_initialization():
 
 
 def add_subparser__makedb(subparsers):
-    makedb_parser = subparsers.add_subparsers(
+    makedb_parser = subparsers.add_parsers(
         'makedb',
         description='Make database for run'
     )
-    add_subparser__makekrakendb(makedb_parser)
-    add_subparser__makekaijudb(makedb_parser)
+    makedb_subparsers = makedb_parser.addsubparsers()
+    add_subparser__makekrakendb(makedb_subparsers)
+    add_subparser__makekaijudb(makedb_subparsers)
 
 
 def add_subparser__makekrakendb(subparsers):
