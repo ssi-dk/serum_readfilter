@@ -14,7 +14,7 @@ def program_initialization():
                         help="Create a kraken db at location",
                         required=True)
     parser.add_argument("-i", "--input_fasta",
-                        help="Fasta file containing sequences to filter on",
+                        help="Fasta file/directory containing sequences to filter on",
                         required=True)
     parser.add_argument("-f", "--force_clean",
                         help="Remove DB folder if present before",
@@ -24,20 +24,35 @@ def program_initialization():
                         help="Number of threads",
                         default=1)
     parser.add_argument("-k", "--kmer_size",
-                        help="Kmer size for DB creation default 21",
-                        default=21)
+                        help="Kmer size for DB creation",
+                        default=31)
+    parser.add_argument("-x", "--file_extensions",
+                        help="Acceptable fasta file extenstions for reference",
+                        default=".fna,.fa,.fasta")
     args = parser.parse_args()
+
+    args.file_extensions = args.file_extensions.split(",")
 
     return args
 
 
-def make_kraken_db_from_fasta(fasta_file, db_location, threads=1, kmer_size=21):
+def make_kraken_db_from_fasta(fasta, db_location, threads, kmer_size, file_extensions):
     if shutil.which("kraken-build") is None:
         print("Error finding kraken-build (from kraken) in PATH")
-        exit()
+        return 1
 
-    with open(fasta_file, "r") as fasta_input:
-        records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
+    records = []
+    if os.path.isdir(fasta):
+        for file in os.listdir(fasta):
+            if os.path.isfile(os.path.join(fasta, file)) and file.split["."][1] in file_extensions:
+                with open(os.path.join(fasta, file), "r") as fasta_input:
+                    records.extend(list(Bio.SeqIO.parse(fasta_input), "fasta"))
+    elif os.path.isfile(fasta):
+        with open(fasta, "r") as fasta_input:
+            records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
+    else:
+        print("No references found")
+        return 1
 
     if not os.path.isdir(db_location):
         os.mkdir(db_location)
@@ -67,11 +82,13 @@ def make_kraken_db_from_fasta(fasta_file, db_location, threads=1, kmer_size=21):
     subprocess.call("kraken-build --threads {} --add-to-library kraken.fasta --db .".format(threads), shell=True)
     subprocess.call("kraken-build --threads {} --build --kmer-len {} --minimizer-len 1 --db .".format(threads, kmer_size), shell=True)
 
+    return 0
+
 
 if __name__ == "__main__":
     args = program_initialization()
     print("Starting")
     if args.force_clean and os.path.isdir(args.database_to_create):
         shutil.rmtree(args.database_to_create)
-    make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size)
+    make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size, args.file_extensions)
     print("Complete")

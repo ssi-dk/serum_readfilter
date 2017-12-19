@@ -26,14 +26,16 @@ def program_initialization():
 def make_kaiju_db_from_fasta(fasta_file, db_location, threads=1):
     if shutil.which("mkbwt") is None:
         print("Error finding mkbwt (from kaiju) in PATH")
-        exit()
+        return 1
     if shutil.which("mkfmi") is None:
         print("Error finding mkfmi (from kaiju) in PATH")
-        exit()
+        return 1
     subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, fasta_file), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")
     os.remove(db_location + ".sa")
+
+    return 0
 
 
 if __name__ == "__main__":
