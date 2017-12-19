@@ -27,11 +27,11 @@ def add_subparser__makedb(subparsers):
         'makedb',
         description='Make database for run'
     )
-    add_subparser__makekrakendb(makedb_parser)
-    add_subparser__makekaijudb(makedb_parser)
+    add_subparser__makekrakendb(db_parser)
+    add_subparser__makekaijudb(db_parser)
 
 
-def add_subparser__makekrakendb(subparsers):
+def add_subparser__makekrakendb(db_parser):
     makekrakendb_parser = subparsers.add_parser(
         'makekrakendb',
         help='',
@@ -79,7 +79,7 @@ def add_subparser__makekrakendb(subparsers):
     )
 
 
-def add_subparser__makekaijudb(subparsers):
+def add_subparser__makekaijudb(db_parser):
     makekaijudb_parser = subparsers.add_parser(
         'makekrakendb',
         help='',
