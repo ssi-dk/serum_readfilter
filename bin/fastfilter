@@ -25,7 +25,7 @@ def program_initialization():
 def add_subparser__makedb(subparsers):
     makedb_parser = subparsers.add_parser(
         'makedb',
-        descrtiption='Make database for run'
+        description='Make database for run'
     )
     add_subparser__makekrakendb(makedb_parser)
     add_subparser__makekaijudb(makedb_parser)
