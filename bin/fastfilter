@@ -27,7 +27,7 @@ def add_subparser__makedb(subparsers):
         'makedb',
         description='Make database for run'
     )
-    makedb_subparsers = makedb_parser.addsubparsers()
+    makedb_subparsers = makedb_parser.add_subparsers()
     add_subparser__makekrakendb(makedb_subparsers)
     add_subparser__makekaijudb(makedb_subparsers)
 
