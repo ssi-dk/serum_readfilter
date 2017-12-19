@@ -20,12 +20,12 @@ def get_fasta_records(fasta, file_extensions):
     return records
 
 
-def make_kraken_db_from_fasta(fasta, db_location, threads, kmer_size, file_extensions):
+def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, file_extensions):
     if shutil.which("kraken-build") is None:
         print("Error finding kraken-build (from kraken) in PATH")
         return 1
 
-    records = get_fasta_records(fasta, file_extensions)
+    records = get_fasta_records(fasta_location, file_extensions)
     if records == 1:
         return 1
 
