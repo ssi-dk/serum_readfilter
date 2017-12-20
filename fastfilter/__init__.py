@@ -3,4 +3,4 @@ __all__ = [
     'runfilter'
 ]
 
-import fastfilter
+from fastfilter import *
