@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-from fastfilter import makedb
-from fastfilter import runfilter
+import fastfilter
 
 
 def program_initialization():
@@ -257,14 +256,14 @@ def main():
 
     if args.mode == "makedb":
         if args.method == "kraken":
-            makedb.make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size, args.file_extensions)
+            fastfilter.makedb.make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size, args.file_extensions)
         if args.method == "kaiju":
-            makedb.make_kaiju_db_from_fasta(args.fasta_file, args.db_location, args.threads)
+            fastfilter.makedb.make_kaiju_db_from_fasta(args.fasta_file, args.db_location, args.threads)
     if args.mode == "runfilter":
         if args.method == "kraken":
-            runfilter.filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
+            fastfilter.runfilter.filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
         if args.method == "kaiju":
-            runfilter.filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
+            fastfilter.runfilter.filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
 
 
 if __name__ == "__main__":
