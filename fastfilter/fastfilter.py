@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-import fastfilter
+import fastfilter.makedb
+import fastfilter.runfilter
 
 
 def program_initialization():
