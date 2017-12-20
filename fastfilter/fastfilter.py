@@ -250,7 +250,7 @@ def add_subparser__runkaijufilter(subparsers):
     )
 
 
-if __name__ == "__main__":
+def main():
     args = program_initialization()
     print(args)
 
@@ -264,3 +264,7 @@ if __name__ == "__main__":
             fastfilter.runfilter.filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
         if args.method == "kaiju":
             fastfilter.runfilter.filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
+
+
+if __name__ == "__main__":
+    main()
