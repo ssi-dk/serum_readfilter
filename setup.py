@@ -4,7 +4,7 @@ setup(
     name='fastfilter',
     version='1.0',
     description='filters read against a small database of interest',
-    url='https://github.com/ssi-dk/',
+    url='https://github.com/ssi-dk/fastfilter',
 
     # Author details
     author='Kim Ng',
@@ -19,6 +19,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
     packages=find_packages(),
+    scripts=['bin/fastfilter'],
     package_data={'fastfilter': ['test_data/*']},
     install_requires=[]
 )
