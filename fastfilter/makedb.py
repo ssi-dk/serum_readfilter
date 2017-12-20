@@ -8,9 +8,10 @@ def get_fasta_records(fasta, file_extensions):
     records = []
     if os.path.isdir(fasta):
         for file in os.listdir(fasta):
-            if os.path.isfile(os.path.join(fasta, file)) and file.split["."][1] in file_extensions:
-                with open(os.path.join(fasta, file), "r") as fasta_input:
-                    records.extend(list(Bio.SeqIO.parse(fasta_input), "fasta"))
+            if os.path.isfile(os.path.join(fasta, file)):
+                if file.split["."][1] in file_extensions:
+                    with open(os.path.join(fasta, file), "r") as fasta_input:
+                        records.extend(list(Bio.SeqIO.parse(fasta_input), "fasta"))
     elif os.path.isfile(fasta):
         with open(fasta, "r") as fasta_input:
             records = list(Bio.SeqIO.parse(fasta_input, "fasta"))

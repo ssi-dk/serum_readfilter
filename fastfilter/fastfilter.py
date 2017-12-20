@@ -253,7 +253,6 @@ def add_subparser__runkaijufilter(subparsers):
 
 def main():
     args = program_initialization()
-    print(args)
 
     if args.mode == "makedb":
         if args.method == "kraken":
