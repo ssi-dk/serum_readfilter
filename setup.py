@@ -20,7 +20,7 @@ setup(
     ],
     packages=find_packages(),
     scripts=['bin/fastfilter'],
-    data_files=['config', ['fastfilter/config.yaml']],
+    data_files=[('config', ['fastfilter/config.yaml'])],
     package_data={'fastfilter': ['test_data/*']},
     install_requires=[]
 )
