@@ -20,7 +20,7 @@ def filter_reads_on_kraken(R1_reads, R2_reads, outfile, db_location, threads, in
     paired = "--paired --out-fmt paired "
     if R2_reads is None:
         R2_reads = ""
-        paired = ""
+        paired = "--out-fmt paired "
 
     if not inverse:
         subprocess.call("kraken --db {} --threads {} {} {} --classified-out {} {} {} 1> /dev/null".format(db_location, threads, config["kraken"]["options"], paired, outfile, R1_reads, R2_reads), shell=True)
