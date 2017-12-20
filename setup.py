@@ -14,12 +14,20 @@ setup(
     license='GPLv3',
 
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Bio-Informatics'
+        'Natural Language :: English',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3',
     ],
     packages=find_packages(),
-    scripts=['bin/fastfilter'],
+    entry_points={
+        'console_scripts': [
+            'fastfilter = fastfilter.fastfilter:main',
+        ]
+    },
     data_files=[('config', ['fastfilter/config.yaml'])],
     package_data={'fastfilter': ['test_data/*']},
     install_requires=[]
