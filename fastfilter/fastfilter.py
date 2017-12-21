@@ -153,7 +153,8 @@ def add_subparser__runkrakenfilter(subparsers):
         "-R2",
         "--R2_reads",
         help="Fasta file containing sequences to filter on",
-        type=str
+        type=str,
+        required=True
     )
     runfilter_parser.add_argument(
         "-o",
@@ -171,12 +172,6 @@ def add_subparser__runkrakenfilter(subparsers):
         "-inv",
         "--inverse",
         help="Returns reads that aren't in this set instead of ones that are",
-        action="store_true",
-        default=False
-    )
-    runfilter_parser.add_argument(
-        "--kaiju",
-        help="Uses Kaiju a BWT AA approach over Kraken",
         action="store_true",
         default=False
     )
@@ -236,12 +231,6 @@ def add_subparser__runkaijufilter(subparsers):
         "-inv",
         "--inverse",
         help="Returns reads that aren't in this set instead of ones that are",
-        action="store_true",
-        default=False
-    )
-    runfilter_parser.add_argument(
-        "--kaiju",
-        help="Uses Kaiju a BWT AA approach over Kraken",
         action="store_true",
         default=False
     )
