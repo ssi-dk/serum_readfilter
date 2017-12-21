@@ -93,11 +93,13 @@ def bbnorm_results(R1_reads, R2_reads, threads):
     if shutil.which("bbnorm.sh") is None:
         print("Error finding bbnorm.sh in PATH")
         exit()
-    temp_R1_file = tempfile.mkstemp(mode='w+t')
-    temp_R2_file = tempfile.mkstemp(mode='w+t')
-    R1_params = "in={} out={}".format(R1_reads, temp_R1_file)
-    R2_params = "in2={} out2={}".format(R2_reads, temp_R2_file) if R2_reads is not None else ""
+    temp_R1_file, temp_R1_path = tempfile.mkstemp()
+    temp_R2_file, temp_R2_path = tempfile.mkstemp()
+    R1_params = "in={} out={}".format(R1_reads, temp_R1_path)
+    R2_params = "in2={} out2={}".format(R2_reads, temp_R2_path) if R2_reads is not None else ""
     subprocess.call("bbnorm.sh threads={} {} {} {} 1> /dev/null".format(threads, R1_params, R2_params, config["bbnorm"]["options"]), shell=True)
-    shutil.move(temp_R1_file.name, R1_reads)
-    shutil.move(temp_R2_file.name, R2_reads)
+    shutil.move(temp_R1_path, R1_reads)
+    shutil.move(temp_R2_path, R2_reads)
+    shutil.remove(temp_R1_path)
+    shutil.remove(temp_R2_path)
     return 0
