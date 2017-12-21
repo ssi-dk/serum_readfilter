@@ -46,16 +46,16 @@ def filter_reads_on_kaiju(R1_reads, R2_reads, outfile, db_location, threads, inv
     R1_params = "-i " + R1_reads
     R2_params = "-j " + R2_reads if R2_reads is not None else ""
 
-    temp = tempfile.TemporaryFile()
+    temp_file = tempfile.NamedTemporaryFile(mode='w+t')
 
-    subprocess.call("kaijux -z {} -f {} {} -o {} {}".format(threads, db_location, R1_params, R2_params, temp.name, config["kaiju"]["options"]), shell=True)
+    subprocess.call("kaijux -z {} -f {} {} -o {} {}".format(threads, db_location, R1_params, R2_params, temp_file.name, config["kaiju"]["options"]), shell=True)
 
     classified_letter = "C"
     if inverse:
         classified_letter = "U"
     reads = [R1_reads, R2_reads] if R2_reads is not None else [R1_reads]
-    extract_reads(temp.name, reads, classified_letter, outfile)
-    os.remove(temp.name)
+    extract_reads(temp_file.name, reads, classified_letter, outfile)
+    temp_file.close()
 
     return 0
 
