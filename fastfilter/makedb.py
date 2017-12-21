@@ -86,7 +86,7 @@ def make_kaiju_db_from_fasta(fasta_location, db_location, threads, file_extensio
         print("Error finding mkfmi (from kaiju) in PATH")
         return 1
 
-    temp_file = tempfile.TemporaryFile()
+    temp_file = tempfile.TemporaryFile(mode='w+t')
     records = get_fasta_records(fasta_location, file_extensions)
 
     Bio.SeqIO.write(records, temp_file, "fasta")
