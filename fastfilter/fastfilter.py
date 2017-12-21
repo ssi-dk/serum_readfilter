@@ -94,8 +94,8 @@ def add_subparser__makekaijudb(subparsers):
     )
     makekaijudb_parser.add_argument(
         "-db",
-        "--database_to_create",
-        help="Create a kaiju.fmi db at location",
+        "--db_location",
+        help="Create file <db_location>.fmi at location",
         required=True)
     makekaijudb_parser.add_argument(
         "-ref",
