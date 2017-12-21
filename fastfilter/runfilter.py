@@ -98,6 +98,6 @@ def bbnorm_results(R1_reads, R2_reads, threads):
     R1_params = "in={} out={}".format(R1_reads, temp_R1_file)
     R2_params = "in2={} out2={}".format(R2_reads, temp_R2_file) if R2_reads is not None else ""
     subprocess.call("bbnorm.sh threads={} {} {} {} 1> /dev/null".format(threads, R1_params, R2_params, config["bbnorm"]["options"]), shell=True)
-    shutil.move(temp_R1_file, R1_reads)
-    shutil.move(temp_R2_file, R2_reads)
+    shutil.move(temp_R1_file.name, R1_reads)
+    shutil.move(temp_R2_file.name, R2_reads)
     return 0
