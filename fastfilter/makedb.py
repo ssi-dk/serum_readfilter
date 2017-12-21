@@ -86,15 +86,15 @@ def make_kaiju_db_from_fasta(fasta_location, db_location, threads, file_extensio
         print("Error finding mkfmi (from kaiju) in PATH")
         return 1
 
-    temp = tempfile.TemporaryFile()
+    temp_file = tempfile.TemporaryFile()
     records = get_fasta_records(fasta_location, file_extensions)
-    with open(temp.name, "w") as temp_fasta:
-        Bio.SeqIO.write(records, temp_fasta, "fasta")
 
-    subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, temp.name), shell=True)
+    Bio.SeqIO.write(records, temp_file, "fasta")
+
+    subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, temp_file.name), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")
     os.remove(db_location + ".sa")
-    os.remove(temp.name)
+    os.remove(temp_file.name)
 
     return 0
