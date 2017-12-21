@@ -2,6 +2,7 @@ import Bio.SeqIO
 import os
 import subprocess
 import shutil
+import gzip
 
 
 def get_fasta_records(fasta, file_extensions):
@@ -9,8 +10,12 @@ def get_fasta_records(fasta, file_extensions):
     if os.path.isdir(fasta):
         for file in os.listdir(fasta):
             if os.path.isfile(os.path.join(fasta, file)) and "." in file and file.split(".")[1] in file_extensions:
+                if file.endswith(".gz"):
+                    with gzip.open(os.path.join(fasta, file), "rt") as fasta_input:
+                        records.extend(list(Bio.SeqIO.parse(fasta_input, "fasta")))
+                else:
                     with open(os.path.join(fasta, file), "r") as fasta_input:
-                        records.extend(list(Bio.SeqIO.parse(fasta_input), "fasta"))
+                        records.extend(list(Bio.SeqIO.parse(fasta_input, "fasta")))
     elif os.path.isfile(fasta):
         with open(fasta, "r") as fasta_input:
             records = list(Bio.SeqIO.parse(fasta_input, "fasta"))
