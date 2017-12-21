@@ -94,7 +94,9 @@ def make_kaiju_db_from_fasta(fasta_location, db_location, threads, file_extensio
     subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, temp_file.name), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")
+    print("removed" + db_location + ".bwt")
     os.remove(db_location + ".sa")
+    print("removed" + db_location + ".sa")
     temp_file.close()
 
     return 0

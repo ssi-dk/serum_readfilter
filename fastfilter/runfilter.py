@@ -4,7 +4,6 @@ import pkg_resources
 import Bio.SeqIO
 import gzip
 import shutil
-import os
 import tempfile
 
 
@@ -21,6 +20,18 @@ def set_config(config_file):
     with open(config_file, "r") as yaml_stream:
         config = yaml.load(yaml_stream)
 
+    return 0
+
+
+def run_filter(args):
+    if args.method == "kraken":
+        filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
+        # if args.bbnorm:
+        #     bbnorm_results(args.output_name)
+    elif args.method == "kaiju":
+        filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
+        # if args.bbnorm:
+        #     bbnorm_results(args.output_name)
     return 0
 
 
