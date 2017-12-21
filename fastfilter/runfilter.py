@@ -5,6 +5,7 @@ import Bio.SeqIO
 import gzip
 import shutil
 import tempfile
+import os
 
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
@@ -100,6 +101,6 @@ def bbnorm_results(R1_reads, R2_reads, threads):
     subprocess.call("bbnorm.sh threads={} {} {} {} 1> /dev/null".format(threads, R1_params, R2_params, config["bbnorm"]["options"]), shell=True)
     shutil.move(temp_R1_path, R1_reads)
     shutil.move(temp_R2_path, R2_reads)
-    shutil.remove(temp_R1_path)
-    shutil.remove(temp_R2_path)
+    os.remove(temp_R1_path)
+    os.remove(temp_R2_path)
     return 0
