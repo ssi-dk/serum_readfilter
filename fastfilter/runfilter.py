@@ -59,7 +59,7 @@ def filter_reads_on_kaiju(R1_reads, R2_reads, outfile, db_location, threads, inv
 
     temp_file = tempfile.NamedTemporaryFile(mode='w+t')
 
-    subprocess.call("kaijux -z {} -f {} {} -o {} {} {}".format(threads, db_location, R1_params, R2_params, temp_file.name, config["kaiju"]["options"]), shell=True)
+    subprocess.call("kaijux -z {} -f {} {} {} {} -o {}".format(threads, db_location, R1_params, R2_params, config["kaiju"]["options"], temp_file.name), shell=True)
 
     classified_letter = "C"
     if inverse:
