@@ -95,5 +95,6 @@ def make_kaiju_db_from_fasta(fasta_location, db_location, threads, file_extensio
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")
     os.remove(db_location + ".sa")
+    os.remove(temp.name)
 
     return 0
