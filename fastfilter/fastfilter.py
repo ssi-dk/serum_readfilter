@@ -18,7 +18,6 @@ def program_initialization():
     add_subparser__makedb(subparsers)
     add_subparser__runfilter(subparsers)
 
-    print(parser)
     args = parser.parse_args()
 
     return args
