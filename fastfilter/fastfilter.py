@@ -20,6 +20,12 @@ def program_initialization():
 
     args = parser.parse_args()
 
+    if args.mode is None:
+        args.mode = 'runfilter'
+
+    if args.method is None:
+        args.method = 'kraken'
+
     return args
 
 
