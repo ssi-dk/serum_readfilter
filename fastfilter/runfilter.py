@@ -30,7 +30,7 @@ def run_filter(args):
         filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
     elif args.method == "kaiju":
         filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
-    if args.bbnorm:
+    if args.norm:
         bbnorm_results(args.output_name + "_R1.fastq", args.output_name + "_R2.fastq", args.threads)
     return 0
 
