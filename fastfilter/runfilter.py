@@ -4,6 +4,9 @@ import pkg_resources
 import Bio.SeqIO
 import gzip
 import shutil
+import os
+import tempfile
+
 
 # for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 config_file = pkg_resources.resource_filename(__name__, "config.yaml")
@@ -13,22 +16,25 @@ with open(config_file, "r") as yaml_stream:
     config = yaml.load(yaml_stream)
 
 
+def set_config(config_file):
+    global config
+    with open(config_file, "r") as yaml_stream:
+        config = yaml.load(yaml_stream)
+
+    return 0
+
+
 def filter_reads_on_kraken(R1_reads, R2_reads, outfile, db_location, threads, inverse):
     if shutil.which("kraken") is None:
         print("Error finding kraken in PATH")
         exit()
-    paired = "--paired --out-fmt paired "
-    if R2_reads is None:
-        R2_reads = ""
-        paired = ""
 
-    if not inverse:
-        subprocess.call("kraken --db {} --threads {} {} {} --classified-out {} {} {} 1> /dev/null".format(db_location, threads, config["kraken"]["options"], paired, outfile, R1_reads, R2_reads), shell=True)
-    else:
-        subprocess.call("kraken --db {} --threads {} {} {} --unclassified-out {} {} {} 1> /dev/null".format(db_location, threads, config["kraken"]["options"], paired, outfile, R1_reads, R2_reads), shell=True)
+    R1_params = R1_reads
+    R2_params = R2_reads + " --paired --out-fmt paired" if R2_reads is not None else ""
+    out_param = "--classified-out " + outfile if not inverse else "--unclassified-out" + outfile
 
-    if R2_reads is None:
-        return (outfile)
+    subprocess.call("kraken --db {} --threads {} {} {} {} {} 1> /dev/null".format(db_location, threads, config["kraken"]["options"], out_param, R1_params, R2_params), shell=True)
+
     return 0
 
 
@@ -36,41 +42,38 @@ def filter_reads_on_kaiju(R1_reads, R2_reads, outfile, db_location, threads, inv
     if shutil.which("kaijux") is None:
         print("Error finding kaijux in PATH")
         exit()
-    # subprocess.call("kaijux -t {} -f {} -i {} -j {} -z {} {}")
-    tempfile = "kaiju.out"
-    if R2_reads is None:
-        subprocess.call("kaijux -z {} -f {} -i {} -o {} {}".format(threads, db_location, R1_reads, tempfile, config["kaiju"]["options"]), shell=True)
-    else:
-        subprocess.call("kaijux -z {} -f {} -i {} -j {} -o {} {}".format(threads, db_location, R1_reads, R2_reads, tempfile, config["kaiju"]["options"]), shell=True)
 
-    if not inverse:
-        extract_reads(tempfile, R1_reads, R2_reads, "C", outfile)
-    else:
-        extract_reads(tempfile, R1_reads, R2_reads, "U", outfile)
+    R1_params = "-i " + R1_reads
+    R2_params = "-j " + R2_reads if R2_reads is not None else ""
+
+    temp = tempfile.TemporaryFile()
+
+    subprocess.call("kaijux -z {} -f {} {} -o {} {}".format(threads, db_location, R1_params, R2_params, temp.name, config["kaiju"]["options"]), shell=True)
+
+    classified_letter = "C"
+    if inverse:
+        classified_letter = "U"
+    reads = [R1_reads, R2_reads] if R2_reads is not None else [R1_reads]
+    extract_reads(temp.name, reads, classified_letter, outfile)
+    os.remove(temp.name)
+
     return 0
 
 
-def extract_reads(classifier_file, R1_reads, R2_reads, classification_symbol, outfile):
+def extract_reads(classifier_file, reads, classification_symbol, outfile):
     read_dict = {}
     with open(classifier_file, "r") as classifier:
         for line in classifier:
             if line.startswith(classification_symbol):
                 read_dict[line.split("\t")[1]] = ""
 
-    filtered_records = []
-    for record in Bio.SeqIO.parse(gzip.open(R1_reads, "rt"), "fastq"):
-        if record.id in read_dict:
-            filtered_records.append(record)
-    with open(outfile + "_R1.fastq", "w") as R1_out:
-        Bio.SeqIO.write(filtered_records, R1_out, "fastq")
-
-    if R2_reads is not None:
+    for i, read in enumerate(reads):
         filtered_records = []
-        for record in Bio.SeqIO.parse(gzip.open(R2_reads, "rt"), "fastq"):
+        for record in Bio.SeqIO.parse(gzip.open(read, "rt"), "fastq"):
             if record.id in read_dict:
                 filtered_records.append(record)
-        with open(outfile + "_R2.fastq", "w") as R1_out:
-            Bio.SeqIO.write(filtered_records, R1_out, "fastq")
+        with open(outfile + "_R" + str(i + 1) + ".fastq", "w") as read_out:
+            Bio.SeqIO.write(filtered_records, read_out, "fastq")
 
     return 0
 
@@ -79,30 +82,8 @@ def bbnorm_results(R1_reads, R2_reads, threads):
     if shutil.which("bbnorm.sh") is None:
         print("Error finding bbnorm.sh in PATH")
         exit()
-    R1_normalized = "norm" + R1_reads
-    R2_normalized = "norm" + R2_reads
-    if R2_reads is None:
-        subprocess.call("bbnorm.sh threads={} in={} out={} {} 1> /dev/null".format(threads, R1_reads, R1_normalized, config["bbnorm"]["options"]), shell=True)
-    else:
-        subprocess.call("bbnorm.sh threads={} in={} in2={} out={} out2={} {} 1> /dev/null".format(threads, R1_reads, R2_reads, R1_normalized, R2_normalized, config["bbnorm"]["options"]), shell=True)
+
+    R1_params = "in={} out={}".format(R1_reads, "norm" + R1_reads)
+    R2_params = "in2={} out2={}".format(R2_reads, "norm" + R2_reads) if R2_reads is not None else ""
+    subprocess.call("bbnorm.sh threads={} {} {} {} 1> /dev/null".format(threads, R1_params, R2_params, config["bbnorm"]["options"]), shell=True)
     return 0
-
-
-# def runfilter(args):
-#     print("Starting")
-
-#     if args.config != "":
-#         with open(args.config, "r") as yaml_stream:
-#             config = yaml.load(yaml_stream)
-
-#     if args.kaiju:
-#         filter_reads_on_kaiju(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
-#     else:
-#         filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
-#     if args.norm:
-#         if args.R2_reads is None:
-#             bbnorm_results(args.output_name + "_R1.fastq", args.R2_reads, args.threads)
-#         else:
-#             bbnorm_results(args.output_name + "_R1.fastq", args.output_name + "_R2.fastq", args.threads)
-
-#     return 0

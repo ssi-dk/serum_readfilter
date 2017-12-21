@@ -3,6 +3,13 @@ import os
 import subprocess
 import shutil
 import gzip
+import tempfile
+
+
+def make_and_set_destination_folder(db_location):
+    if not os.path.isdir(db_location):
+        os.mkdir(db_location)
+    os.chdir(db_location)
 
 
 def get_fasta_records(fasta, file_extensions):
@@ -25,6 +32,14 @@ def get_fasta_records(fasta, file_extensions):
     return records
 
 
+def make_db(args):
+    if args.method == "kraken":
+        make_kraken_db_from_fasta(args.fasta_location, args.db_location, args.threads, args.kmer_size, args.file_extensions)
+    elif args.method == "kaiju":
+        make_kaiju_db_from_fasta(args.fasta_location, args.db_location, args.threads, args.file_extensions)
+    return 0
+
+
 def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, file_extensions):
     if shutil.which("kraken-build") is None:
         print("Error finding kraken-build (from kraken) in PATH")
@@ -34,9 +49,7 @@ def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, f
     if records == 1:
         return 1
 
-    if not os.path.isdir(db_location):
-        os.mkdir(db_location)
-    os.chdir(db_location)
+    make_and_set_destination_folder(db_location)
 
     for i, record in enumerate(records):
         records[i].description = ""
@@ -57,7 +70,7 @@ def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, f
         output.write("kraken:taxid|1\t1\n")
 
     with open("kraken.fasta", "w") as output:
-        Bio.SeqIO.write(records, "kraken.fasta", "fasta")
+        Bio.SeqIO.write(records, output, "fasta")
 
     subprocess.call("kraken-build --threads {} --add-to-library kraken.fasta --db .".format(threads), shell=True)
     subprocess.call("kraken-build --threads {} --build --kmer-len {} --minimizer-len 1 --db .".format(threads, kmer_size), shell=True)
@@ -65,14 +78,20 @@ def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, f
     return 0
 
 
-def make_kaiju_db_from_fasta(fasta_file, db_location, threads):
+def make_kaiju_db_from_fasta(fasta_location, db_location, threads, file_extensions):
     if shutil.which("mkbwt") is None:
         print("Error finding mkbwt (from kaiju) in PATH")
         return 1
     if shutil.which("mkfmi") is None:
         print("Error finding mkfmi (from kaiju) in PATH")
         return 1
-    subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, fasta_file), shell=True)
+
+    temp = tempfile.TemporaryFile()
+    records = get_fasta_records(fasta_location, file_extensions)
+    with open(temp.name, "w") as temp_fasta:
+        Bio.SeqIO.write(records, temp_fasta, "fasta")
+
+    subprocess.call("mkbwt -n {} -a protein -o {} {}".format(threads, db_location, temp.name), shell=True)
     subprocess.call("mkfmi {}".format(db_location), shell=True)
     os.remove(db_location + ".bwt")
     os.remove(db_location + ".sa")

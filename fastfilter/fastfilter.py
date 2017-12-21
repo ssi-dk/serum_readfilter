@@ -18,13 +18,8 @@ def program_initialization():
     add_subparser__makedb(subparsers)
     add_subparser__runfilter(subparsers)
 
+    print(parser)
     args = parser.parse_args()
-
-    if args.mode is None:
-        args.mode = 'runfilter'
-
-    if args.method is None:
-        args.method = 'kraken'
 
     return args
 
@@ -51,14 +46,14 @@ def add_subparser__makekrakendb(subparsers):
     )
     makekrakendb_parser.add_argument(
         "-db",
-        "--database_to_create",
+        "--db_location",
         help="Create a kraken db at location",
         required=True
     )
     makekrakendb_parser.add_argument(
-        "-i",
-        "--input_fasta",
-        help="Fasta file/directory containing sequences to filter on",
+        "-ref",
+        "--fasta_location",
+        help="Reference fasta file/directory containing sequences to filter on",
         required=True
     )
     makekrakendb_parser.add_argument(
@@ -81,7 +76,7 @@ def add_subparser__makekrakendb(subparsers):
         default=31
     )
     makekrakendb_parser.add_argument(
-        "-x",
+        "-ext",
         "--file_extensions",
         nargs="+",
         type=list,
@@ -103,15 +98,23 @@ def add_subparser__makekaijudb(subparsers):
         help="Create a kaiju.fmi db at location",
         required=True)
     makekaijudb_parser.add_argument(
-        "-i",
-        "--input_fasta",
-        help="Fasta file containing sequences to filter on",
+        "-ref",
+        "--fasta_location",
+        help="Reference fasta file/directory containing sequences to filter on",
         required=True)
     makekaijudb_parser.add_argument(
         "-t",
         "--threads",
         help="Number of threads",
         default=1)
+    makekaijudb_parser.add_argument(
+        "-ext",
+        "--file_extensions",
+        nargs="+",
+        type=list,
+        help="Acceptable fasta file extenstions for reference",
+        default=["fna", "fa", "fasta"]
+    )
 
 
 def add_subparser__runfilter(subparsers):
@@ -261,10 +264,11 @@ def main():
     args = program_initialization()
 
     if args.mode == "makedb":
-        if args.method == "kraken":
-            makedb.make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size, args.file_extensions)
-        if args.method == "kaiju":
-            makedb.make_kaiju_db_from_fasta(args.fasta_file, args.db_location, args.threads)
+        makedb.make_db(args)
+        # if args.method == "kraken":
+        #     makedb.make_kraken_db_from_fasta(args.input_fasta, args.database_to_create, args.threads, args.kmer_size, args.file_extensions)
+        # if args.method == "kaiju":
+        #     makedb.make_kaiju_db_from_fasta(args.fasta_file, args.db_location, args.threads)
     if args.mode == "runfilter":
         if args.method == "kraken":
             runfilter.filter_reads_on_kraken(args.R1_reads, args.R2_reads, args.output_name, args.database_to_use, args.threads, args.inverse)
