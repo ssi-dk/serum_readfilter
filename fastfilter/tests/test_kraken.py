@@ -13,10 +13,12 @@ class fastfilterTests(unittest.TestCase):
 
     def setUp(self):
         self.here = os.path.abspath(__file__)
+        print(os.getcwd(), "cwd")
         self.test_dir = tempfile.mkdtemp()
         os.chdir(self.test_dir)
 
     def test_make_db_and_filter(self):
+        print(os.path.abspath(__file__))
         makedb.make_kraken_db_from_fasta(os.path.join(self.here, "data/cdifficile_mlst"), "cdifficile_db", 1, 31, ["tfa"])
         os.chdir(self.test_dir)
         self.assertTrue(os.path.isdir("cdifficile_db"))
