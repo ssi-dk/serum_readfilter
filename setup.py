@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='fastfilter',
+    name='serum_readfilter',
     version='1.0',
     description='filters read against a small database of interest',
-    url='https://github.com/ssi-dk/fastfilter',
+    url='https://github.com/ssi-dk/serum_readfilter',
 
     # Author details
     author='Kim Ng',
@@ -25,12 +25,12 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'fastfilter = fastfilter.fastfilter:main',
+            'serum_readfilter = serum_readfilter.serum_readfilter:main',
         ]
     },
     include_package_data=True,
-    data_files=[('config', ['fastfilter/config.yaml'])],
-    package_data={'fastfilter': ['tests/*']},
+    data_files=[('config', ['serum_readfilter/config.yaml'])],
+    package_data={'serum_readfilter': ['tests/*']},
 
     test_suite='nose.collector',
     tests_require=['SerumReadFilter']
