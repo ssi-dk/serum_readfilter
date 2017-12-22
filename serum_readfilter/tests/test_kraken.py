@@ -5,11 +5,11 @@ import shutil
 import os
 import tempfile
 
-from fastfilter import makedb
-from fastfilter import runfilter
+from serum_readfilter import makedb
+from serum_readfilter import runfilter
 
 
-class fastfilterTests(unittest.TestCase):
+class serum_readfilterTests(unittest.TestCase):
 
     def setUp(self):
         self.here = os.path.dirname(os.path.abspath(__file__))

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import argparse
-from fastfilter import makedb
-from fastfilter import runfilter
+from serum_readfilter import makedb
+from serum_readfilter import runfilter
 
 
 def program_initialization():
     parser = argparse.ArgumentParser(
-        prog='fastfilter',
-        usage='fastfilter <mode> <options>',
-        description='FastFilter quickly filters reads against a database of interest'
+        prog='serum_readfilter',
+        usage='serum_readfilter <mode> <options>',
+        description='serum_readfilter quickly filters reads against a database of interest'
     )
     subparsers = parser.add_subparsers(
         title='Available modes',
@@ -41,7 +41,7 @@ def add_subparser__makekrakendb(subparsers):
         'kraken',
         help='',
         usage='',
-        description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads'
+        description='serum_readfilter - make kraken db, generate a DB to be used for filtering of reads'
     )
     makekrakendb_parser.add_argument(
         "-db",
@@ -89,7 +89,7 @@ def add_subparser__makekaijudb(subparsers):
         'kaiju',
         help='',
         usage='',
-        description='Fastfilter - make kraken db, generate a DB to be used for filtering of reads'
+        description='serum_readfilter - make kraken db, generate a DB to be used for filtering of reads'
     )
     makekaijudb_parser.add_argument(
         "-db",
@@ -134,7 +134,7 @@ def add_subparser__runkrakenfilter(subparsers):
         'kraken',
         help='',
         usage='',
-        description='Fastfilter - filter a set of reads against a database (default: kraken)'
+        description='serum_readfilter - filter a set of reads against a database (default: kraken)'
     )
     runfilter_parser.add_argument(
         "-db", "--database_to_use",
@@ -194,7 +194,7 @@ def add_subparser__runkaijufilter(subparsers):
         'kaiju',
         help='',
         usage='',
-        description='Fastfilter - filter a set of reads against a database (default: kraken)'
+        description='serum_readfilter - filter a set of reads against a database (default: kraken)'
     )
     runfilter_parser.add_argument(
         "-db", "--database_to_use",
