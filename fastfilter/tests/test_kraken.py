@@ -17,7 +17,7 @@ class fastfilterTests(unittest.TestCase):
         os.chdir(self.test_dir)
 
     def test_make_db_and_filter(self):
-        makedb.make_kraken_db_from_fasta(os.path.join(self.here, "/data/cdifficile_mlst"), "cdifficile_db", 1, 31, ["tfa"])
+        makedb.make_kraken_db_from_fasta(os.path.join(self.here, "data/cdifficile_mlst"), "cdifficile_db", 1, 31, ["tfa"])
         self.assertTrue(os.path.isdir("cdifficile_db"))
         self.assertTrue(os.path.isfile("cdifficile_db/lca.complete"))
         runfilter.filter_reads_on_kraken(os.path.join(self.here, "data/reads/cdifficile_R1.fastq.gz"), os.path.join(self.here, "data/reads/cdifficile_R1.fastq.gz"), "filtered", "cdifficile_db", 1, False)
