@@ -7,7 +7,6 @@ import shutil
 import tempfile
 
 
-# for f in ../../cge_dbs/resfinder_db/*.fsa; do (cat "${f}"; echo) >> resfinder.fasta; done
 config_file = pkg_resources.resource_filename(__name__, "config.yaml")
 yaml = ruamel.yaml.YAML(typ='safe')
 yaml.default_flow_style = False

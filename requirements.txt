@@ -1,0 +1,8 @@
+Bio.SeqIO
+os
+subprocess
+shutil
+gzip
+tempfile
+ruamel.yaml
+pkg_resources

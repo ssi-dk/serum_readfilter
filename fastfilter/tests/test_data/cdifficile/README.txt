@@ -1,1 +1,0 @@
-Retrieved on Dec 17, 2017 via pubmlst (http://pubmlst.org/data/dbases.xml)
