@@ -31,4 +31,7 @@ setup(
     include_package_data=True,
     data_files=[('config', ['fastfilter/config.yaml'])],
     package_data={'fastfilter': ['tests/*']},
+
+    test_suite='nose.collector',
+    tests_require=['SerumReadFilter']
 )
