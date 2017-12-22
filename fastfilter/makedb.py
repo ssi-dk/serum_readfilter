@@ -49,6 +49,7 @@ def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, f
     if records == 1:
         return 1
 
+    previous_path = os.getcwd()
     make_and_set_destination_folder(db_location)
 
     for i, record in enumerate(records):
@@ -75,6 +76,7 @@ def make_kraken_db_from_fasta(fasta_location, db_location, threads, kmer_size, f
     subprocess.call("kraken-build --threads {} --add-to-library kraken.fasta --db .".format(threads), shell=True)
     subprocess.call("kraken-build --threads {} --build --kmer-len {} --minimizer-len 1 --db .".format(threads, kmer_size), shell=True)
 
+    os.chdir(previous_path)
     return 0
 
 
