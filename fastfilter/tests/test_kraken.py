@@ -12,11 +12,11 @@ class fastfilterTests(unittest.TestCase):
         pass
 
     def test_make_db(self):
-        makedb.make_kraken_db_from_fasta("/data/cdifficile_mlst", "cdifficile_db", 1, 31, ["tfa"])
+        makedb.make_kraken_db_from_fasta("data/cdifficile_mlst", "cdifficile_db", 1, 31, ["tfa"])
         # self.assertTrue(os.path.isdir("cdifficile_db"))
 
     def test_runfilter(self):
-        runfilter.filter_reads_on_kraken("/data/reads/cdifficile_R1.fastq.gz", "/data/reads/cdifficile_R1.fastq.gz", "filtered", "cdifficile_db", 1, False)
+        runfilter.filter_reads_on_kraken("data/reads/cdifficile_R1.fastq.gz", "data/reads/cdifficile_R1.fastq.gz", "filtered", "cdifficile_db", 1, False)
         # self.assertTrue(os.path.isfile("filtered_R1.fastq"))
         # self.assertTrue(os.path.isfile("filtered_R2.fastq"))
 
