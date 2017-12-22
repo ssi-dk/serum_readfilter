@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import unittest
 import shutil
 import os
@@ -13,7 +15,6 @@ class fastfilterTests(unittest.TestCase):
         self.here = os.path.abspath(__file__)
         self.test_dir = tempfile.mkdtemp()
         os.chdir(self.test_dir)
-        pass
 
     def test_make_db_and_filter(self):
         makedb.make_kraken_db_from_fasta(os.path.join(self.here, "/data/cdifficile_mlst"), "cdifficile_db", 1, 31, ["tfa"])
@@ -28,7 +29,6 @@ class fastfilterTests(unittest.TestCase):
         os.remove("filtered_R2.fastq")
         os.chdir(self.here)
         shutil.rmtree("cdifficile_db")
-        pass
 
 
 if __name__ == '__main__':
