@@ -110,7 +110,7 @@ def add_subparser__makekaijudb(subparsers):
         "-ext",
         "--file_extensions",
         nargs="+",
-        type=list,
+        type=str,
         help="Acceptable fasta file extenstions for reference",
         default=["fna", "fa", "fasta"]
     )
