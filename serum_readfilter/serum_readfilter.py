@@ -78,7 +78,7 @@ def add_subparser__makekrakendb(subparsers):
         "-ext",
         "--file_extensions",
         nargs="+",
-        type=list,
+        type=str,
         help="Acceptable fasta file extenstions for reference",
         default=["fna", "fa", "fasta"]
     )
