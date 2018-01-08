@@ -5,4 +5,5 @@ serum_readfilter is a program designed to filter whole genome seequence data to 
 To use:
 
 serum_readfilter makedb kraken -db <database> -i <reference.fasta/or directory of fasta>
+
 serum_readfilter runfilter kraken -db <database> -R1 <R1_reads.fastq.gz> -R2 <R2_reads.fastq.gz>
