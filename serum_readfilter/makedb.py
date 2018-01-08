@@ -34,6 +34,7 @@ def get_fasta_records(fasta, file_extensions):
 
 
 def make_db(args):
+    print(args.file_extensions)
     if args.method == "kraken":
         make_kraken_db_from_fasta(args.fasta_location, args.db_location, args.threads, args.kmer_size, args.file_extensions)
     elif args.method == "kaiju":
