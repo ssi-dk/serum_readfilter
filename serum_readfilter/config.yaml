@@ -1,5 +1,5 @@
 kraken:
-  options: "--quick --min-hits 1 --fastq-output"
+  options: "--preload --quick --min-hits 1 --fastq-output"
 kaiju:
   options: "-m 7 -s 1"
 bbnorm:
